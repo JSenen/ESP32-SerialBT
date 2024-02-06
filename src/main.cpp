@@ -10,7 +10,7 @@ BluetoothSerial SerialBT;
 
 //initialize Bluetooth serial comunication 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(115200); //Start bluetooth module
   SerialBT.begin("ESP32test"); //Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
 }
