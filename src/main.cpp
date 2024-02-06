@@ -17,9 +17,11 @@ void setup() {
 
 //Send and receive data
 void loop() {
+  // If serialport receive data, then send data to device
   if (Serial.available()) {
     SerialBT.write(Serial.read());
   }
+  // If there are bytes to read in serial port, write this data in serial monitor
   if (SerialBT.available()) {
     Serial.write(SerialBT.read());
   }
