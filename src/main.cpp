@@ -13,14 +13,13 @@ const int ledPin = 2; // Definimos el pin del LED
 void setup() {
   Serial.begin(115200); //Start bluetooth module
   SerialBT.begin("ESP32test"); //Bluetooth device name
-  Serial.printf("The device started, now you can pair it with bluetooth!");
+  Serial.println("The device started, now you can pair it with bluetooth!");
   pinMode(ledPin, OUTPUT); // Inicializamos el pin del LED como salida
 }
 
 //Send and receive data
 void loop() {
   digitalWrite(ledPin, HIGH); // Encendemos el LED
-  Serial.printf("The device started, now you can pair it with bluetooth!");
   delay(500); // Esperamos 0.5 segundos
   digitalWrite(ledPin,LOW);
   delay(500);
