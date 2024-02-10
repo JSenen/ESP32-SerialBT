@@ -5,7 +5,7 @@
 #include <DHT_U.h>
 
 #define DHTPIN 2  
-#define LED 3
+#define LED 13
 
 #define DHTTYPE DHT11   // DHT 11
 
@@ -49,6 +49,11 @@ void loop() {
   Serial.print(f);
   Serial.println("°F");
 
+  //Transferir los datos por Bluetooth
+  SerialBT.print("Temperatura: ");
+  SerialBT.print(t);
+  SerialBT.print(" ºC");
+  
   digitalWrite(LED,LOW);
   delay(3000);
 
