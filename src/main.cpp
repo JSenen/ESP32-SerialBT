@@ -1,4 +1,15 @@
+#include <Arduino.h>
 #include "BluetoothSerial.h"
+#include <Adafruit_Sensor.h>
+#include <DHT.h>
+#include <DHT_U.h>
+
+#define DHTPIN 2  
+#define LED 3
+
+#define DHTTYPE DHT11   // DHT 11
+
+DHT dht(DHTPIN, DHTTYPE);
 
 //Check if Bluetooth is enable
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
@@ -7,22 +18,40 @@
 
 //Instance of BluetoothSerial
 BluetoothSerial SerialBT;
-const int ledPin = 2; // Definimos el pin del LED
+//const int ledPin = 3; // Definimos el pin del LED
 
 //initialize Bluetooth serial comunication 
 void setup() {
   Serial.begin(115200); //Start bluetooth module
   SerialBT.begin("ESP32test"); //Bluetooth device name
+  dht.begin(); // Begin DHTC11 Temperature sensor
   Serial.println("The device started, now you can pair it with bluetooth!");
-  pinMode(ledPin, OUTPUT); // Inicializamos el pin del LED como salida
+  pinMode(LED, OUTPUT); // Inicializamos el pin del LED como salida
 }
 
 //Send and receive data
 void loop() {
-  digitalWrite(ledPin, HIGH); // Encendemos el LED
-  delay(500); // Esperamos 0.5 segundos
-  digitalWrite(ledPin,LOW);
-  delay(500);
+  digitalWrite(LED, HIGH); // Encendemos el LED
+  delay(3000); // Esperamos 3 segundos entre lecturas
+
+  float h = dht.readHumidity();
+  // Leer temperatura ºC
+  float t = dht.readTemperature();
+  // si se le pasa a la funcion el parametro true obtenemos la temperatura en ºF
+  float f = dht.readTemperature(true);
+
+  Serial.println("Humedad: ");
+  Serial.print(h);
+  Serial.print("%\n");
+  Serial.println("Temperatura: ");
+  Serial.print(t);
+  Serial.println("°C  ");
+  Serial.print(f);
+  Serial.println("°F");
+
+  digitalWrite(LED,LOW);
+  delay(3000);
+
   // If serialport receive data, then send data to device
   if (Serial.available()) {
     SerialBT.write(Serial.read());
@@ -31,5 +60,5 @@ void loop() {
   if (SerialBT.available()) {
     Serial.write(SerialBT.read());
   }
-  delay(20);
+  delay(200);
 }
