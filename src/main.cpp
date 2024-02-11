@@ -5,9 +5,10 @@
 #include <DHT_U.h>
 
 #define DHTPIN 2  
-#define LED 13
+//#define LED 13
 
 #define DHTTYPE DHT11   // DHT 11
+#define SERVICE_UUID "00001101-0000-1000-8000-00805F9B34FB"
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -26,13 +27,13 @@ void setup() {
   SerialBT.begin("ESP32test"); //Bluetooth device name
   dht.begin(); // Begin DHTC11 Temperature sensor
   Serial.println("The device started, now you can pair it with bluetooth!");
-  pinMode(LED, OUTPUT); // Inicializamos el pin del LED como salida
+ // pinMode(LED, OUTPUT); // Inicializamos el pin del LED como salida
 }
 
 //Send and receive data
 void loop() {
-  digitalWrite(LED, HIGH); // Encendemos el LED
-  delay(3000); // Esperamos 3 segundos entre lecturas
+ // digitalWrite(LED, HIGH); // Encendemos el LED
+  delay(500); // Esperamos 3 segundos entre lecturas
 
   float h = dht.readHumidity();
   // Leer temperatura ºC
@@ -50,12 +51,10 @@ void loop() {
   Serial.println("°F");
 
   //Transferir los datos por Bluetooth
-  SerialBT.print("Temperatura: ");
   SerialBT.print(t);
-  SerialBT.print(" ºC");
   
-  digitalWrite(LED,LOW);
-  delay(3000);
+  //digitalWrite(LED,LOW);
+  delay(500);
 
   // If serialport receive data, then send data to device
   if (Serial.available()) {
