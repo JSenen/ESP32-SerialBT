@@ -34,7 +34,7 @@ void setup() {
 //Send and receive data
 void loop() {
  // digitalWrite(LED, HIGH); // Encendemos el LED
-  delay(500); // Esperamos 3 segundos entre lecturas
+  delay(5000); // Esperamos 15 segundos 
 
   float h = dht.readHumidity();
   // Leer temperatura ºC
@@ -67,7 +67,7 @@ void loop() {
    SerialBT.println(output);
   
   //digitalWrite(LED,LOW);
-  delay(500);
+  //delay(15000);
 
   // If serialport receive data, then send data to device
   if (Serial.available()) {
