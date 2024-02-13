@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <ArduinoJson.h>
 #include "BluetoothSerial.h"
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
@@ -51,7 +52,19 @@ void loop() {
   Serial.println("°F");
 
   //Transferir los datos por Bluetooth
-  SerialBT.print(t);
+  //SerialBT.print(t);
+
+  // Crear un objeto JSON para los datos
+  StaticJsonDocument<100> doc;
+  doc["temperatura"] = t;
+  doc["humedad"] = h;
+ 
+  // Convertir el objeto JSON en una cadena
+   String output;
+   serializeJson(doc, output);
+
+   //Enviar los datos
+   SerialBT.println(output);
   
   //digitalWrite(LED,LOW);
   delay(500);
