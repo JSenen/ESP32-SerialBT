@@ -52,6 +52,15 @@ void loop() {
 
   //Transferir los datos por Bluetooth
   SerialBT.print(t);
+
+  // Crear un objeto JSON para los datos
+  //StaticJsonDocument<100> doc;
+  //doc["temperatura"] = t;
+  //doc["humedad"] = h;
+ 
+  // Convertir el objeto JSON en una cadena
+  // String output;
+  // serializeJson(doc, output);
   
   //digitalWrite(LED,LOW);
   delay(500);
