@@ -39,18 +39,26 @@ void loop() {
     size_t size = SerialBT.readBytes(buffer, sizeof(buffer));
 
     // Convertir los bytes recibidos en una cadena hexadecimal
-    String receivedHex;
-    for (size_t i = 0; i < size; i++) {
-      receivedHex += String(buffer[i], HEX);
-    }
+String receivedHex;
+for (size_t i = 0; i < size; i++) {
+  // Convierte el byte en su representación hexadecimal como una cadena
+  String hexByte = String(buffer[i], HEX);
+  // Asegúrate de que el byte se represente con dos caracteres
+  if (hexByte.length() == 1) {
+    hexByte = "0" + hexByte; // Agrega un 0 al principio si es necesario
+  }
+  // Concatena la representación hexadecimal del byte a la cadena recibida
+  receivedHex += hexByte;
+}
+Serial.println("HEX recibido = " + receivedHex);
 
     // Comparar la cadena hexadecimal recibida con el código esperado
-    if (receivedHex == "0207E20103EF04") {
+    if (receivedHex == "0207e20103ef04") {
       // Enviar ACK correcto
-      SerialBT.print("020606031104");
+      SerialBT.print("020606031104\r\n");
     } else {
       // Enviar NACK
-      SerialBT.print("020615032004");
+      SerialBT.print("020615032004\r\n");
     }
   }
 }
