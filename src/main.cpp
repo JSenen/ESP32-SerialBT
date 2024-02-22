@@ -79,3 +79,20 @@ void loop() {
   }
   delay(200);
 }
+
+/* COMANDOS UAR
+void setup() {
+  Serial.begin(115200);
+  SerialBT.begin("ESP32_BT"); // Nombre del dispositivo Bluetooth
+}
+
+void loop() {
+  if (SerialBT.available()) {
+    String command = SerialBT.readStringUntil('\n'); // Leer comando recibido
+    // Procesar el comando recibido aquí
+    
+    // Enviar ACK de vuelta a la aplicación Android
+    SerialBT.println("ACK");
+  }
+}
+*/
