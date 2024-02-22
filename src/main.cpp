@@ -33,66 +33,24 @@ void setup() {
 
 //Send and receive data
 void loop() {
- // digitalWrite(LED, HIGH); // Encendemos el LED
-  delay(5000); // Esperamos 15 segundos 
-
-  float h = dht.readHumidity();
-  // Leer temperatura ºC
-  float t = dht.readTemperature();
-  // si se le pasa a la funcion el parametro true obtenemos la temperatura en ºF
-  float f = dht.readTemperature(true);
-
-  Serial.println("Humedad: ");
-  Serial.print(h);
-  Serial.print("%\n");
-  Serial.println("Temperatura: ");
-  Serial.print(t);
-  Serial.println("°C  ");
-  Serial.print(f);
-  Serial.println("°F");
-
-  //Transferir los datos por Bluetooth
-  //SerialBT.print(t);
-
-  // Crear un objeto JSON para los datos
-  StaticJsonDocument<100> doc;
-  doc["temperatura"] = t;
-  doc["humedad"] = h;
- 
-  // Convertir el objeto JSON en una cadena
-   String output;
-   serializeJson(doc, output);
-
-   //Enviar los datos
-   SerialBT.println(output);
-  
-  //digitalWrite(LED,LOW);
-  //delay(15000);
-
-  // If serialport receive data, then send data to device
-  if (Serial.available()) {
-    SerialBT.write(Serial.read());
-  }
-  // If there are bytes to read in serial port, write this data in serial monitor
   if (SerialBT.available()) {
-    Serial.write(SerialBT.read());
-  }
-  delay(200);
-}
+    // Leer los datos recibidos en un buffer
+    uint8_t buffer[32];
+    size_t size = SerialBT.readBytes(buffer, sizeof(buffer));
 
-/* COMANDOS UAR
-void setup() {
-  Serial.begin(115200);
-  SerialBT.begin("ESP32_BT"); // Nombre del dispositivo Bluetooth
-}
+    // Convertir los bytes recibidos en una cadena hexadecimal
+    String receivedHex;
+    for (size_t i = 0; i < size; i++) {
+      receivedHex += String(buffer[i], HEX);
+    }
 
-void loop() {
-  if (SerialBT.available()) {
-    String command = SerialBT.readStringUntil('\n'); // Leer comando recibido
-    // Procesar el comando recibido aquí
-    
-    // Enviar ACK de vuelta a la aplicación Android
-    SerialBT.println("ACK");
+    // Comparar la cadena hexadecimal recibida con el código esperado
+    if (receivedHex == "0207E20103EF04") {
+      // Enviar ACK correcto
+      SerialBT.print("020606031104");
+    } else {
+      // Enviar NACK
+      SerialBT.print("020615032004");
+    }
   }
 }
-*/
